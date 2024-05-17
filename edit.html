@@ -6,7 +6,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to get ID from path URL
     function getIdFromPath() {
         const pathParts = window.location.pathname.split('/');
+        console.log('Path parts:', pathParts); // Log path parts for debugging
         const id = pathParts[pathParts.length - 1];
+        console.log('Extracted ID:', id); // Log extracted ID
         return isNaN(id) ? null : id;
     }
 
@@ -32,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return response.json();
     })
     .then(data => {
+        console.log('Data fetched:', data); // Log fetched data for debugging
         document.getElementById('id').value = data.id;
         document.getElementById('nama').value = data.nama;
         document.getElementById('tanggal_lahir').value = data.tanggal_lahir;
