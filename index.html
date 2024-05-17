@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .navbar-custom {
+            background-color: #007bff;
+        }
+        .navbar-custom .navbar-brand {
+            color: #fff;
+        }
+        .data-list-container {
+            border: 1px solid #007bff; /* Tambahkan border */
+            border-radius: 10px;
+        }
+        .data-list-header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            margin-bottom: 0; /* Hapus margin-bottom */
+        }
+        .data-list {
+            background-color: #fff;
+            color: #000;
+            padding: 20px;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            border-top: 1px solid #007bff; /* Tambahkan border top */
+        }
+        .data-list li {
+            list-style: none;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd; /* Tambahkan border bottom */
+            padding-bottom: 10px;
+            position: relative;
+        }
+        .data-list strong {
+            width: 150px;
+            display: inline-block;
+        }
+        .edit-btn {
+            position: absolute;
+            top: 10px;
+            right: 70px;
+        }
+        .delete-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .text-white {
+            color: white !important;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light navbar-custom">
+  <a class="navbar-brand" href="#">Data KTP</a>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a href="input_data.php" class="nav-link btn btn-success btn-sm text-white">Input Data</a>
+      </li>
+      <li class="nav-item">
+        <a href="index.php" class="nav-link btn btn-danger btn-sm text-white ml-3">Log Out</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="data-list-container">
+                <div class="data-list-header">
+                    <h2 class="mb-0">Daftar Data</h2>
+                </div>
+                <ul class="data-list">
+                    <li>
+                        <strong>Nama</strong> : John Doe <br>
+                        <strong>Tanggal Lahir</strong> : 1990-05-15 <br>
+                        <strong>Agama</strong> : Islam <br>
+                        <strong>Status</strong> : Menikah <br>
+                        <strong>Alamat</strong> : Jl. Contoh No. 123
+                        <span class="edit-btn"><a href="edit.php?id=1" class="btn btn-primary btn-sm">Edit</a></span>
+                        <span class="delete-btn"><a href="delete.php?id=1" class="btn btn-danger btn-sm">Hapus</a></span>
+                    </li>
+                    <li>
+                        <strong>Nama</strong> : Jane Doe <br>
+                        <strong>Tanggal Lahir</strong> : 1995-08-20 <br>
+                        <strong>Agama</strong> : Kristen <br>
+                        <strong>Status</strong> : Belum Menikah <br>
+                        <strong>Alamat</strong> : Jl. Contoh No. 456
+                        <span class="edit-btn"><a href="edit.php?id=2" class="btn btn-primary btn-sm">Edit</a></span>
+                        <span class="delete-btn"><a href="delete.php?id=1" class="btn btn-danger btn-sm">Hapus</a></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Mendefinisikan payload
+            const payload = {
+                email: email,
+                password: password
+            };
+
+            
+            fetch('https://fe-cust-dot-optimum-library-419103.et.r.appspot.com/admin/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        
+                        window.location.href = 'index.html';
+                    } else {
+                        
+                        const errorMessageElement = document.getElementById('error-message');
+                        errorMessageElement.textContent = data.message;
+                        errorMessageElement.style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    const errorMessageElement = document.getElementById('error-message');
+                    errorMessageElement.textContent = 'An error occurred. Please try again.';
+                    errorMessageElement.style.display = 'block';
+                });
+        });
+    });
+</script>
+
+</body>
+</html>
