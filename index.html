@@ -91,55 +91,60 @@
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', async () => {
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJlbmRvZyIsImlhdCI6MTcxNTkzMjQ1Mn0.GSSjztasOq8ak-kvRkd6YntlDntMLkwtTZPw-yPmdsM';
+document.addEventListener('DOMContentLoaded', async () => {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+        window.location.href = 'login.html';
+        return;
+    }
+
     const config = {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
     };
 
     try {
-      const response = await axios.get('https://crud-dot-optimum-library-419103.et.r.appspot.com/data', config);
-      const dataList = response.data;
+        const response = await axios.get('https://crud-dot-optimum-library-419103.et.r.appspot.com/data', config);
+        const dataList = response.data;
 
-      const dataListContainer = document.querySelector('.data-list');
-      dataListContainer.innerHTML = ''; // Kosongkan elemen sebelum menambahkan data
+        const dataListContainer = document.querySelector('.data-list');
+        dataListContainer.innerHTML = ''; // Kosongkan elemen sebelum menambahkan data
 
-      dataList.forEach(data => {
-        const listItem = document.createElement('li');
-        listItem.innerHTML = `
-          <strong>Nama</strong> : ${data.nama} <br>
-          <strong>Tanggal Lahir</strong> : ${data.tanggal_lahir} <br>
-          <strong>Agama</strong> : ${data.agama} <br>
-          <strong>Status</strong> : ${data.status} <br>
-          <strong>Alamat</strong> : ${data.alamat}
-          <span class="edit-btn"><a href="edit.php?id=${data.id}" class="btn btn-primary btn-sm">Edit</a></span>
-          <span class="delete-btn"><button class="btn btn-danger btn-sm" onclick="deleteData(${data.id})">Hapus</button></span>
-        `;
-        dataListContainer.appendChild(listItem);
-      });
+        dataList.forEach(data => {
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `
+              <strong>Nama</strong> : ${data.nama} <br>
+              <strong>Tanggal Lahir</strong> : ${data.tanggal_lahir} <br>
+              <strong>Agama</strong> : ${data.agama} <br>
+              <strong>Status</strong> : ${data.status} <br>
+              <strong>Alamat</strong> : ${data.alamat}
+              <span class="edit-btn"><a href="edit.php?id=${data.id}" class="btn btn-primary btn-sm">Edit</a></span>
+              <span class="delete-btn"><button class="btn btn-danger btn-sm" onclick="deleteData(${data.id})">Hapus</button></span>
+            `;
+            dataListContainer.appendChild(listItem);
+        });
     } catch (error) {
-      console.error('Failed to fetch data:', error.response ? error.response.data.message : error.message);
+        console.error('Failed to fetch data:', error.response ? error.response.data.message : error.message);
     }
-  });
+});
 
-  async function deleteData(id) {
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJlbmRvZyIsImlhdCI6MTcxNTkzMjQ1Mn0.GSSjztasOq8ak-kvRkd6YntlDntMLkwtTZPw-yPmdsM';
+async function deleteData(id) {
+    const token = localStorage.getItem('authToken');
     const config = {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
     };
 
     try {
-      await axios.delete(`https://crud-dot-optimum-library-419103.et.r.appspot.com/data/${id}`, config);
-      alert('Data berhasil dihapus');
-      location.reload(); // Refresh halaman setelah data dihapus
+        await axios.delete(`https://crud-dot-optimum-library-419103.et.r.appspot.com/data/${id}`, config);
+        alert('Data berhasil dihapus');
+        location.reload(); // Refresh halaman setelah data dihapus
     } catch (error) {
-      console.error('Failed to delete data:', error.response ? error.response.data.message : error.message);
+        console.error('Failed to delete data:', error.response ? error.response.data.message : error.message);
     }
-  }
+}
 </script>
 
 </body>
