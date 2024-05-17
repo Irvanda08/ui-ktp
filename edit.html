@@ -18,7 +18,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
   <a class="navbar-brand" href="#">Edit Data KTP</a>
-  <button class="btn btn-secondary ml-auto" onclick="window.location.href='home'">Back</button>
+  <button class="btn btn-secondary ml-auto" onclick="window.location.href='home.php'">Back</button>
 </nav>
 
 <div class="container mt-5">
@@ -32,7 +32,7 @@
                     <form id="editForm">
                         <div class="form-group">
                             <label for="id">ID</label>
-                            <input type="text" name="id" id="id" class="form-control" value="1" readonly>
+                            <input type="text" name="id" id="id" class="form-control" readonly>
                         </div>
                         <div class="form-group">
                             <label for="nama">Nama</label>
@@ -77,9 +77,20 @@
 document.addEventListener('DOMContentLoaded', function() {
     const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJlbmRvZyIsImlhdCI6MTcxNTkzMjQ1Mn0.GSSjztasOq8ak-kvRkd6YntlDntMLkwtTZPw-yPmdsM';
     const apiUrl = 'https://crud-dot-optimum-library-419103.et.r.appspot.com/data';
+    
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
 
-    const id = document.getElementById('id').value;
+    const id = getQueryParam('id');
+    if (!id) {
+        alert('ID tidak ditemukan di URL');
+        window.location.href = 'home';
+        return;
+    }
 
+    // Populate the form with existing data
     fetch(`${apiUrl}/${id}`, {
         method: 'GET',
         headers: {
@@ -89,6 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
     })
     .then(response => response.json())
     .then(data => {
+        document.getElementById('id').value = data.id;
         document.getElementById('nama').value = data.nama;
         document.getElementById('tanggal_lahir').value = data.tanggal_lahir;
         document.getElementById('agama').value = data.agama;
@@ -100,7 +112,6 @@ document.addEventListener('DOMContentLoaded', function() {
         alert('Terjadi kesalahan saat memuat data');
     });
 
-    // Handle form submission
     document.getElementById('editForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
