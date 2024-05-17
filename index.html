@@ -114,7 +114,7 @@
           <strong>Agama</strong> : ${data.agama} <br>
           <strong>Status</strong> : ${data.status} <br>
           <strong>Alamat</strong> : ${data.alamat}
-          <span class="edit-btn"><a href="edit.php?id=${data.id}" class="btn btn-primary btn-sm">Edit</a></span>
+          <span class="edit-btn"><a href="edit?id=${data.id}" class="btn btn-primary btn-sm">Edit</a></span>
           <span class="delete-btn"><button class="btn btn-danger btn-sm" onclick="deleteData(${data.id})">Hapus</button></span>
         `;
         dataListContainer.appendChild(listItem);
