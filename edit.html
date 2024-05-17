@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const id = getIdFromPath();
     if (!id) {
         alert('ID tidak ditemukan di URL');
-        window.location.href = 'home.php'; // Redirect to home
+        window.location.href = '/home'; // Redirect to home
         return;
     }
 
@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
     .catch((error) => {
         console.error('Kesalahan:', error);
         alert('Terjadi kesalahan saat memuat data');
-        window.location.href = 'home.php';
+        window.location.href = '/home';
     });
 
     // Handle form submission
@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             console.log('Sukses:', data);
             alert('Data berhasil diperbarui');
-            window.location.href = 'home.php';
+            window.location.href = '/home';
         })
         .catch((error) => {
             console.error('Kesalahan:', error);
