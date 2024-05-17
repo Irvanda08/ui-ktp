@@ -78,14 +78,15 @@ document.addEventListener('DOMContentLoaded', function() {
     function getIdFromPath() {
         const pathParts = window.location.pathname.split('/');
         const id = pathParts[pathParts.length - 1];
+        console.log('ID from path:', id); // Log the ID
         return id;
     }
 
     const id = getIdFromPath();
     if (!id) {
         alert('ID tidak ditemukan di URL');
-        window.location.href = '/home'; // Redirect to home
-        return;
+        //window.location.href = '/home'; // Redirect to home
+        //return;
     }
 
     // Populate the form with existing data
@@ -97,13 +98,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     })
     .then(response => {
+        console.log('API response:', response); // Log the full response
         if (!response.ok) {
             throw new Error('Network response was not ok ' + response.statusText);
         }
         return response.json();
     })
     .then(data => {
-        console.log(data); // Debug log
+        console.log('Data received:', data); // Log the received data
         if (!data.id || !data.nama) {
             throw new Error('Data tidak valid');
         }
@@ -116,8 +118,8 @@ document.addEventListener('DOMContentLoaded', function() {
     })
     .catch((error) => {
         console.error('Kesalahan:', error);
-        //alert('Terjadi kesalahan saat memuat data');
-        //window.location.href = '/home';
+        alert('Terjadi kesalahan saat memuat data');
+        window.location.href = '/home';
     });
 
     // Handle form submission
