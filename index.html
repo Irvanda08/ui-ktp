@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Data</title>
+    <title>Home</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
         .navbar-custom {
             background-color: #007bff;
@@ -12,125 +13,133 @@
         .navbar-custom .navbar-brand {
             color: #fff;
         }
+        .data-list-container {
+            border: 1px solid #007bff; /* Tambahkan border */
+            border-radius: 10px;
+        }
+        .data-list-header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            margin-bottom: 0; /* Hapus margin-bottom */
+        }
+        .data-list {
+            background-color: #fff;
+            color: #000;
+            padding: 20px;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            border-top: 1px solid #007bff; /* Tambahkan border top */
+        }
+        .data-list li {
+            list-style: none;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd; /* Tambahkan border bottom */
+            padding-bottom: 10px;
+            position: relative;
+        }
+        .data-list strong {
+            width: 150px;
+            display: inline-block;
+        }
+        .edit-btn {
+            position: absolute;
+            top: 10px;
+            right: 70px;
+        }
+        .delete-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .text-white {
+            color: white !important;
+        }
     </style>
 </head>
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
-  <a class="navbar-brand" href="#">Edit Data KTP</a>
-  <button class="btn btn-secondary ml-auto" onclick="window.location.href='home.php'">Back</button>
+  <a class="navbar-brand" href="#">Data KTP</a>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a href="input_data.html" class="nav-link btn btn-success btn-sm text-white">Input Data</a>
+      </li>
+      <li class="nav-item">
+        <a href="login.html" class="nav-link btn btn-danger btn-sm text-white ml-3">Log Out</a>
+      </li>
+    </ul>
+  </div>
 </nav>
 
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    Edit Data
+        <div class="col-md-8">
+            <div class="data-list-container">
+                <div class="data-list-header">
+                    <h2 class="mb-0">Daftar Data</h2>
                 </div>
-                <div class="card-body">
-                    <form id="editForm">
-                        <div class="form-group">
-                            <label for="id">ID</label>
-                            <input type="text" name="id" id="id" class="form-control" value="1" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="nama">Nama</label>
-                            <input type="text" name="nama" id="nama" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="tanggal_lahir">Tanggal Lahir</label>
-                            <input type="date" name="tanggal_lahir" id="tanggal_lahir" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="agama">Agama</label>
-                            <select name="agama" id="agama" class="form-control" required>
-                                <option value="Islam">Islam</option>
-                                <option value="Kristen">Kristen</option>
-                                <option value="Katolik">Katolik</option>
-                                <option value="Hindu">Hindu</option>
-                                <option value="Buddha">Buddha</option>
-                                <option value="Konghucu">Konghucu</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="status">Status</label>
-                            <select name="status" id="status" class="form-control" required>
-                                <option value="Menikah">Menikah</option>
-                                <option value="Belum Menikah">Belum Menikah</option>
-                                <option value="Cerai">Cerai</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="alamat">Alamat</label>
-                            <textarea name="alamat" id="alamat" class="form-control" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-block">Simpan</button>
-                    </form>
-                </div>
+                <ul class="data-list">
+                    <!-- Data will be populated here by JavaScript -->
+                </ul>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', async () => {
     const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJlbmRvZyIsImlhdCI6MTcxNTkzMjQ1Mn0.GSSjztasOq8ak-kvRkd6YntlDntMLkwtTZPw-yPmdsM';
-    const apiUrl = 'https://crud-dot-optimum-library-419103.et.r.appspot.com/data';
+    const config = {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    };
 
-    const id = document.getElementById('id').value;
-    
-    fetch(`${apiUrl}/${id}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        document.getElementById('nama').value = data.nama;
-        document.getElementById('tanggal_lahir').value = data.tanggal_lahir;
-        document.getElementById('agama').value = data.agama;
-        document.getElementById('status').value = data.status;
-        document.getElementById('alamat').value = data.alamat;
-    })
-    .catch((error) => {
-        console.error('Kesalahan:', error);
-        alert('Terjadi kesalahan saat memuat data');
-    });
+    try {
+      const response = await axios.get('https://crud-dot-optimum-library-419103.et.r.appspot.com/data', config);
+      const dataList = response.data;
 
-    // Handle form submission
-    document.getElementById('editForm').addEventListener('submit', function(event) {
-        event.preventDefault();
+      const dataListContainer = document.querySelector('.data-list');
+      dataListContainer.innerHTML = ''; // Kosongkan elemen sebelum menambahkan data
 
-        const formData = {
-            nama: document.getElementById('nama').value,
-            tanggal_lahir: document.getElementById('tanggal_lahir').value,
-            agama: document.getElementById('agama').value,
-            status: document.getElementById('status').value,
-            alamat: document.getElementById('alamat').value
-        };
+      dataList.forEach(data => {
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `
+          <strong>Nama</strong> : ${data.nama} <br>
+          <strong>Tanggal Lahir</strong> : ${data.tanggal_lahir} <br>
+          <strong>Agama</strong> : ${data.agama} <br>
+          <strong>Status</strong> : ${data.status} <br>
+          <strong>Alamat</strong> : ${data.alamat}
+          <span class="edit-btn"><a href="edit.php?id=${data.id}" class="btn btn-primary btn-sm">Edit</a></span>
+          <span class="delete-btn"><button class="btn btn-danger btn-sm" onclick="deleteData(${data.id})">Hapus</button></span>
+        `;
+        dataListContainer.appendChild(listItem);
+      });
+    } catch (error) {
+      console.error('Failed to fetch data:', error.response ? error.response.data.message : error.message);
+    }
+  });
 
-        fetch(`${apiUrl}/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify(formData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Sukses:', data);
-            alert('Data berhasil diperbarui');
-        })
-        .catch((error) => {
-            console.error('Kesalahan:', error);
-            alert('Terjadi kesalahan saat memperbarui data');
-        });
-    });
-});
+  async function deleteData(id) {
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJlbmRvZyIsImlhdCI6MTcxNTkzMjQ1Mn0.GSSjztasOq8ak-kvRkd6YntlDntMLkwtTZPw-yPmdsM';
+    const config = {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    };
+
+    try {
+      await axios.delete(`https://crud-dot-optimum-library-419103.et.r.appspot.com/data/${id}`, config);
+      alert('Data berhasil dihapus');
+      location.reload(); // Refresh halaman setelah data dihapus
+    } catch (error) {
+      console.error('Failed to delete data:', error.response ? error.response.data.message : error.message);
+    }
+  }
 </script>
 
 </body>
