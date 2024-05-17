@@ -22,7 +22,7 @@ app.get("/home", (req, res) => {
 });
 
 app.get("/signup", (req, res) => {
-  res.sendFile(path.join(__dirname, "SignUp.html"));
+  res.sendFile(path.join(__dirname, "register.html"));
 });
 
 app.get("/edit", (req, res) => {
