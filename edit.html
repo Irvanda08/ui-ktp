@@ -18,7 +18,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
   <a class="navbar-brand" href="#">Edit Data KTP</a>
-  <button class="btn btn-secondary ml-auto" onclick="window.location.href='home.php'">Back</button>
+  <button class="btn btn-secondary ml-auto" onclick="window.location.href='home'">Back</button>
 </nav>
 
 <div class="container mt-5">
@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             console.log('Sukses:', data);
             alert('Data berhasil diperbarui');
-            window.location.href = 'home.php';
+            window.location.href = 'home';
         })
         .catch((error) => {
             console.error('Kesalahan:', error);
