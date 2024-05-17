@@ -1,92 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Data</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        .navbar-custom {
-            background-color: #007bff;
-        }
-        .navbar-custom .navbar-brand {
-            color: #fff;
-        }
-    </style>
-</head>
-<body>
-
-<nav class="navbar navbar-expand-lg navbar-light navbar-custom">
-  <a class="navbar-brand" href="#">Edit Data KTP</a>
-  <button class="btn btn-secondary ml-auto" onclick="window.location.href='home.php'">Back</button>
-</nav>
-
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    Edit Data
-                </div>
-                <div class="card-body">
-                    <form id="editForm">
-                        <div class="form-group">
-                            <label for="id">ID</label>
-                            <input type="text" name="id" id="id" class="form-control" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="nama">Nama</label>
-                            <input type="text" name="nama" id="nama" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="tanggal_lahir">Tanggal Lahir</label>
-                            <input type="date" name="tanggal_lahir" id="tanggal_lahir" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="agama">Agama</label>
-                            <select name="agama" id="agama" class="form-control" required>
-                                <option value="Islam">Islam</option>
-                                <option value="Kristen">Kristen</option>
-                                <option value="Katolik">Katolik</option>
-                                <option value="Hindu">Hindu</option>
-                                <option value="Buddha">Buddha</option>
-                                <option value="Konghucu">Konghucu</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="status">Status</label>
-                            <select name="status" id="status" class="form-control" required>
-                                <option value="Menikah">Menikah</option>
-                                <option value="Belum Menikah">Belum Menikah</option>
-                                <option value="Cerai">Cerai</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="alamat">Alamat</label>
-                            <textarea name="alamat" id="alamat" class="form-control" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-block">Simpan</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJlbmRvZyIsImlhdCI6MTcxNTkzMjQ1Mn0.GSSjztasOq8ak-kvRkd6YntlDntMLkwtTZPw-yPmdsM';
     const apiUrl = 'https://crud-dot-optimum-library-419103.et.r.appspot.com/data';
-    
-    function getQueryParam(param) {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(param);
+
+    // Function to get ID from path URL
+    function getIdFromPath() {
+        const pathParts = window.location.pathname.split('/');
+        const id = pathParts[pathParts.length - 1];
+        return isNaN(id) ? null : id;
     }
 
-    const id = getQueryParam('id');
+    const id = getIdFromPath();
     if (!id) {
         alert('ID tidak ditemukan di URL');
-        window.location.href = 'home';
+        window.location.href = '/home'; // Redirect to home.php
         return;
     }
 
@@ -98,7 +25,12 @@ document.addEventListener('DOMContentLoaded', function() {
             'Authorization': `Bearer ${token}`
         }
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.json();
+    })
     .then(data => {
         document.getElementById('id').value = data.id;
         document.getElementById('nama').value = data.nama;
@@ -110,8 +42,10 @@ document.addEventListener('DOMContentLoaded', function() {
     .catch((error) => {
         console.error('Kesalahan:', error);
         alert('Terjadi kesalahan saat memuat data');
+        window.location.href = '/home';
     });
 
+    // Handle form submission
     document.getElementById('editForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
@@ -131,11 +65,16 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             body: JSON.stringify(formData)
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
         .then(data => {
             console.log('Sukses:', data);
             alert('Data berhasil diperbarui');
-            window.location.href = 'home';
+            window.location.href = '/home';
         })
         .catch((error) => {
             console.error('Kesalahan:', error);
@@ -144,6 +83,3 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-
-</body>
-</html>
