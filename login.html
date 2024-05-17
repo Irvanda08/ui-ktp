@@ -28,7 +28,7 @@
                     Login
                 </div>
                 <div class="card-body">
-                    <form action="home.php" method="post">
+                    <form id="loginProses" method="post">
                         <div class="form-group">
                             <label for="username">Username</label>
                             <input type="text" name="username" id="username" class="form-control">
@@ -38,7 +38,7 @@
                             <input type="password" name="password" id="password" class="form-control">
                         </div>
                         <div class="text-center mb-3">
-                                Don't have an account?<a href="register.php"> Register here</a>
+                                Don't have an account?<a href="register.html"> Register here</a>
                          </div>
 
                         <button type="submit" class="btn btn-primary btn-block">Login</button>
@@ -48,6 +48,56 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('loginProses').addEventListener('submit', function(event) {
+            event.preventDefault(); // Mencegah pengiriman formulir secara default
+
+            // Mendapatkan nilai dari formulir
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Mendefinisikan payload
+            const payload = {
+                username: username,
+                password: password
+            };
+
+            // Melakukan panggilan API menggunakan fetch
+            fetch('https://crud-gudang-dot-f-03-415104.et.r.appspot.com/db/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        // Menangani login yang berhasil
+                        window.location.href = 'index.html'; // Mengarahkan ke halaman dashboard
+                    } else {
+                        // Menampilkan pesan kesalahan
+                        const errorMessageElement = document.getElementById('error-message');
+                        errorMessageElement.textContent = data.message;
+                        errorMessageElement.style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    const errorMessageElement = document.getElementById('error-message');
+                    errorMessageElement.textContent = 'An error occurred. Please try again.';
+                    errorMessageElement.style.display = 'block';
+                });
+        });
+    });
+    </script>
 
 </body>
 </html>
