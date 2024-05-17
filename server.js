@@ -42,6 +42,10 @@ app.get("/input_data", (req, res) => {
   res.sendFile(path.join(__dirname, "input_data.html"));
 });
 
+app.get('/data', (req, res) => {
+  res.json({ message: 'This is a CORS-enabled response.' });
+});
+
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`server listening on port ${PORT}...`);
