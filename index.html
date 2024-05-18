@@ -93,15 +93,11 @@
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('authToken');
-    const username = localStorage.getItem('username');
     
     if (!token) {
         window.location.href = '/';
         return;
     }
-
-    const greetingElement = document.getElementById('greeting');
-    greetingElement.innerText = `Hello, ${username}`;
 
     const config = {
         headers: {
@@ -152,8 +148,7 @@ async function deleteData(id) {
 }
 
 function logout() {
-    localStorage.removeItem('authToken'); // Menghapus token dari localStorage
-    localStorage.removeItem('username');
+    localStorage.removeItem('authToken');
     window.location.href = '/'; // Redirect ke halaman login
 }
 
