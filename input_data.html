@@ -24,7 +24,7 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
-        <a class="nav-link text-white" href="home.php">Home</a>
+        <a class="nav-link text-white" href="/home">Home</a>
       </li>
     </ul>
   </div>
@@ -108,10 +108,12 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             console.log('Success:', data);
             alert('Data berhasil disimpan');
+            window.location.href = '/home'
         })
         .catch((error) => {
             console.error('Error:', error);
             alert('Terjadi kesalahan saat menyimpan data');
+            window.location.href = '/home'
         });
     });
 });
