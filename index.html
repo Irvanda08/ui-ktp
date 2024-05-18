@@ -150,6 +150,15 @@ function logout() {
     localStorage.removeItem('authToken'); // Menghapus token dari localStorage
     window.location.href = '/'; // Redirect ke halaman login
 }
+
+if (!localStorage.getItem('authToken')) {
+    window.location.href = '/';
+}
+
+// Mengatur header cache
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js');
+}
 </script>
 
 </body>
