@@ -105,11 +105,10 @@ document.addEventListener('DOMContentLoaded', function() {
     })
     .then(data => {
         console.log('Data received:', data); // Log the received data
-        if (!Array.isArray(data) || data.length === 0 || !data[0].id || !data[0].nama) {
+        if (!Array.isArray(data) || data.length === 0 || !data[0].nama) {
             throw new Error('Data tidak valid');
         }
         const userData = data[0];
-        document.getElementById('id').value = userData.id;
         document.getElementById('nama').value = userData.nama;
         document.getElementById('tanggal_lahir').value = userData.tanggal_lahir;
         document.getElementById('agama').value = userData.agama;
