@@ -114,9 +114,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         dataList.forEach(data => {
             const listItem = document.createElement('li');
+            const formattedDate = new Date(data.tanggal_lahir).toLocaleDateString('id-ID', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
             listItem.innerHTML = `
               <strong>Nama</strong> : ${data.nama} <br>
-              <strong>Tanggal Lahir</strong> : ${data.tanggal_lahir} <br>
+              <strong>Tanggal Lahir</strong> : ${formattedDate} <br>
               <strong>Agama</strong> : ${data.agama} <br>
               <strong>Status</strong> : ${data.status} <br>
               <strong>Alamat</strong> : ${data.alamat}
