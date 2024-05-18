@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Data</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
         .navbar-custom {
             background-color: #007bff;
@@ -75,8 +76,17 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJlbmRvZyIsImlhdCI6MTcxNTkzMjQ1Mn0.GSSjztasOq8ak-kvRkd6YntlDntMLkwtTZPw-yPmdsM';
-    const apiUrl = 'https://crud-dot-optimum-library-419103.et.r.appspot.com/data';
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+        window.location.href = '/';
+        return;
+    }
+
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    };
 
     function getIdFromPath() {
         const pathParts = window.location.pathname.split('/');
@@ -92,29 +102,22 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-    fetch(`${apiUrl}/${id}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        }
-    })
+    axios.get(`https://crud-dot-optimum-library-419103.et.r.appspot.com/data/${id}`, config)
     .then(response => {
         console.log('API response:', response);
-        return response.json();
-    })
-    .then(data => {
+        const data = response.data;
         console.log('Data received:', data); // Log the received data
-        if (!Array.isArray(data) || data.length === 0 || !data[0].id || !data[0].nama) {
+
+        if (!data || !data.id || !data.nama) {
             throw new Error('Data tidak valid');
         }
-        const userData = data[0];
-        document.getElementById('id').value = userData.id;
-        document.getElementById('nama').value = userData.nama;
-        document.getElementById('tanggal_lahir').value = userData.tanggal_lahir;
-        document.getElementById('agama').value = userData.agama;
-        document.getElementById('status').value = userData.status;
-        document.getElementById('alamat').value = userData.alamat;
+
+        document.getElementById('id').value = data.id;
+        document.getElementById('nama').value = data.nama;
+        document.getElementById('tanggal_lahir').value = data.tanggal_lahir;
+        document.getElementById('agama').value = data.agama;
+        document.getElementById('status').value = data.status;
+        document.getElementById('alamat').value = data.alamat;
     })
     .catch((error) => {
         console.error('Kesalahan:', error);
@@ -133,22 +136,9 @@ document.addEventListener('DOMContentLoaded', function() {
             alamat: document.getElementById('alamat').value
         };
 
-        fetch(`${apiUrl}/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify(formData)
-        })
+        axios.put(`https://crud-dot-optimum-library-419103.et.r.appspot.com/data/${id}`, formData, config)
         .then(response => {
-            if (!response.ok) {
-                throw new Error('Kesalahan saat memperbarui data');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Sukses:', data);
+            console.log('Sukses:', response);
             alert('Data berhasil diperbarui');
             window.location.href = '/home';
         })
