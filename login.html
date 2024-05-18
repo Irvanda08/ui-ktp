@@ -65,7 +65,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
         const token = response.data.token;
 
         localStorage.setItem('authToken', token);
-        window.location.href = 'home';
+        window.location.href = '/home';
     } catch (error) {
         console.error('Failed to login:', error.response ? error.response.data.message : error.message);
         alert('Login failed');
