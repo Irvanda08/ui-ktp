@@ -34,6 +34,10 @@
                             <label for="username">Username</label>
                             <input type="text" name="username" id="username" class="form-control" required>
                         </div>
+<!--                         <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" name="email" id="email" class="form-control" required>
+                        </div> -->
                         <div class="form-group">
                             <label for="password">Password</label>
                             <input type="password" name="password" id="password" class="form-control" required>
@@ -67,30 +71,19 @@ document.getElementById('registerForm').addEventListener('submit', function(even
         return;
     }
 
-    axios.get(`https://auth-dot-optimum-library-419103.et.r.appspot.com/admin/check-username?username=${username}`)
-        .then(response => {
-            if (response.data.exists) {
-                alert('Username already exists');
-            } else {
-                const registerData = {
-                    username: username,
-                    password: password
-                };
+    const registerData = {
+        username: username,
+        password: password
+    };
 
-                axios.post('https://auth-dot-optimum-library-419103.et.r.appspot.com/admin/', registerData)
-                    .then(response => {
-                        alert('Registration successful');
-                        window.location.href = '/'; // Redirect to login page after successful registration
-                    })
-                    .catch(error => {
-                        console.error('There was an error registering!', error);
-                        alert('Registration failed: ' + (error.response ? error.response.data.message : error.message));
-                    });
-            }
+    axios.post('https://auth-dot-optimum-library-419103.et.r.appspot.com/admin/', registerData)
+        .then(response => {
+            alert('Registration successful');
+            window.location.href = '/'; // Redirect to login page after successful registration
         })
         .catch(error => {
-            console.error('There was an error checking the username!', error);
-            alert('Username check failed: ' + (error.response ? error.response.data.message : error.message));
+            console.error('There was an error registering!', error);
+            alert('Registration failed: ' + (error.response ? error.response.data.message : error.message));
         });
 });
 </script>
